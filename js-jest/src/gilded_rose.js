@@ -11,6 +11,10 @@ class Shop {
     this.items = items;
   }
 
+  maxQuality = 50;
+  concertTicketSellByThreshold1 = 11;
+  concertTicketSellByThreshold2 = 6;
+
   decreaseQualityOfItemAtIndex(i) {
     if (this.items[i].quality > 0) {
       this.items[i].quality = this.items[i].quality - 1;
@@ -21,9 +25,9 @@ class Shop {
     this.items[i].sellIn = this.items[i].sellIn - 1;
   }
 
-  increaseQualityOfItemAtIndex(i) {
-    if (this.items[i].quality < 50) {
-      this.items[i].quality = this.items[i].quality + 1;
+  increaseQualityOfItemAtIndex(i, increaseBy = 1) {
+    if (this.items[i].quality < maxQuality) {
+      this.items[i].quality = this.items[i].quality + increaseBy;
     }
   }
 
@@ -40,15 +44,12 @@ class Shop {
   }
 
   updateAgedBrieAndBackStageProductQuality(i) {
-    if (this.items[i].quality < 50) {
-      this.increaseQualityOfItemAtIndex(i);
-      if (this.items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
-        if (this.items[i].sellIn < 11 && this.items[i].quality < 50) {
-          this.increaseQualityOfItemAtIndex(i);
-        }
-        if (this.items[i].sellIn < 6 && this.items[i].quality < 50) {
-          this.increaseQualityOfItemAtIndex(i);
-        }
+    this.increaseQualityOfItemAtIndex(i);
+    if (this.items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
+      if (this.items[i].sellIn < this.concertTicketSellByThreshold2) {
+        this.increaseQualityOfItemAtIndex(i, 2);
+      } else if (this.items[i].sellIn < this.concertTicketSellByThreshold1) {
+        this.increaseQualityOfItemAtIndex(i);
       }
     }
   }
