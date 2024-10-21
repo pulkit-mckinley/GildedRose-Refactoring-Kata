@@ -12,7 +12,9 @@ class Shop {
   }
 
   decreaseQualityOfItemAtIndex(i) {
-    this.items[i].quality = this.items[i].quality - 1;
+    if (this.items[i].quality > 0) {
+      this.items[i].quality = this.items[i].quality - 1;
+    }
   }
 
   decreaseSellInOfItemAtIndex(i) {
@@ -25,15 +27,27 @@ class Shop {
     }
   }
 
+  updateQualityOnSellOnNegativeOfItemAtIndex(i) {
+    if (this.items[i].name == "Aged Brie") {
+      this.increaseQualityOfItemAtIndex(i);
+    } else if (
+      this.items[i].name == "Backstage passes to a TAFKAL80ETC concert"
+    ) {
+      this.items[i].quality = 0;
+    } else {
+      this.decreaseQualityOfItemAtIndex(i);
+    }
+  }
+
   updateAgedBrieAndBackStageProductQuality(i) {
     if (this.items[i].quality < 50) {
-      this.items[i].quality = this.items[i].quality + 1;
+      this.increaseQualityOfItemAtIndex(i);
       if (this.items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
         if (this.items[i].sellIn < 11 && this.items[i].quality < 50) {
-          this.items[i].quality = this.items[i].quality + 1;
+          this.increaseQualityOfItemAtIndex(i);
         }
         if (this.items[i].sellIn < 6 && this.items[i].quality < 50) {
-          this.items[i].quality = this.items[i].quality + 1;
+          this.increaseQualityOfItemAtIndex(i);
         }
       }
     }
@@ -47,27 +61,19 @@ class Shop {
           this.items[i].name == "Backstage passes to a TAFKAL80ETC concert"
         ) {
           this.updateAgedBrieAndBackStageProductQuality(i);
-        } else if (this.items[i].quality > 0) {
+        } else {
           this.decreaseQualityOfItemAtIndex(i);
         }
 
         this.decreaseSellInOfItemAtIndex(i);
 
         if (this.items[i].sellIn < 0) {
-          if (this.items[i].name == "Aged Brie") {
-            this.increaseQualityOfItemAtIndex(i);
-          } else if (
-            this.items[i].name == "Backstage passes to a TAFKAL80ETC concert"
-          ) {
-            this.items[i].quality = 0;
-          } else if (this.items[i].quality > 0) {
-            this.decreaseQualityOfItemAtIndex(i);
-          }
+          this.updateQualityOnSellOnNegativeOfItemAtIndex(i);
         }
       }
-    }
 
-    return this.items;
+      return this.items;
+    }
   }
 }
 
