@@ -26,7 +26,7 @@ class Shop {
   }
 
   increaseQualityOfItemAtIndex(i, increaseBy = 1) {
-    if (this.items[i].quality < maxQuality) {
+    if (this.items[i].quality < this.maxQuality) {
       this.items[i].quality = this.items[i].quality + increaseBy;
     }
   }
@@ -72,9 +72,8 @@ class Shop {
           this.updateQualityOnSellOnNegativeOfItemAtIndex(i);
         }
       }
-
-      return this.items;
     }
+    return this.items;
   }
 }
 
