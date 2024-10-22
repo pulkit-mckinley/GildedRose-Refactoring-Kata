@@ -39,18 +39,6 @@ class Shop {
   concertTicketSellByThreshold1 = 11;
   concertTicketSellByThreshold2 = 6;
 
-  updateQualityOnSellOnNegativeOfItemAtIndex(i) {
-    if (this.items[i].name == "Aged Brie") {
-      this.items[i].increaseQuality();
-    } else if (
-      this.items[i].name == "Backstage passes to a TAFKAL80ETC concert"
-    ) {
-      this.items[i].quality = 0;
-    } else {
-      this.items[i].decreaseQuality();
-    }
-  }
-
   updateAgedBrieAndBackStageProductQuality(i) {
     this.items[i].increaseQuality();
     if (this.items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
