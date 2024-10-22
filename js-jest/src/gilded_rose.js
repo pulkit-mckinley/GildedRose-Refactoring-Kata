@@ -4,6 +4,30 @@ class Item {
     this.sellIn = sellIn;
     this.quality = quality;
   }
+
+  decreaseQuality(decreaseBy = 1) {
+    if (this.quality > 0) {
+      this.quality = this.quality - decreaseBy;
+    }
+  }
+  increaseQuality(increaseBy = 1) {
+    if (this.quality < 50) {
+      this.quality = this.quality + increaseBy;
+    }
+  }
+  decreaseSellIn() {
+    this.sellIn--;
+  }
+
+  updateQualityOnSellOnNegative() {
+    if (this.name == "Aged Brie") {
+      this.increaseQuality();
+    } else if (this.name == "Backstage passes to a TAFKAL80ETC concert") {
+      this.quality = 0;
+    } else {
+      this.decreaseQuality();
+    }
+  }
 }
 
 class Shop {
@@ -15,41 +39,25 @@ class Shop {
   concertTicketSellByThreshold1 = 11;
   concertTicketSellByThreshold2 = 6;
 
-  decreaseQualityOfItemAtIndex(i) {
-    if (this.items[i].quality > 0) {
-      this.items[i].quality = this.items[i].quality - 1;
-    }
-  }
-
-  decreaseSellInOfItemAtIndex(i) {
-    this.items[i].sellIn = this.items[i].sellIn - 1;
-  }
-
-  increaseQualityOfItemAtIndex(i, increaseBy = 1) {
-    if (this.items[i].quality < this.maxQuality) {
-      this.items[i].quality = this.items[i].quality + increaseBy;
-    }
-  }
-
   updateQualityOnSellOnNegativeOfItemAtIndex(i) {
     if (this.items[i].name == "Aged Brie") {
-      this.increaseQualityOfItemAtIndex(i);
+      this.items[i].increaseQuality();
     } else if (
       this.items[i].name == "Backstage passes to a TAFKAL80ETC concert"
     ) {
       this.items[i].quality = 0;
     } else {
-      this.decreaseQualityOfItemAtIndex(i);
+      this.items[i].decreaseQuality();
     }
   }
 
   updateAgedBrieAndBackStageProductQuality(i) {
-    this.increaseQualityOfItemAtIndex(i);
+    this.items[i].increaseQuality();
     if (this.items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
       if (this.items[i].sellIn < this.concertTicketSellByThreshold2) {
-        this.increaseQualityOfItemAtIndex(i, 2);
+        this.items[i].increaseQuality(2);
       } else if (this.items[i].sellIn < this.concertTicketSellByThreshold1) {
-        this.increaseQualityOfItemAtIndex(i);
+        this.items[i].increaseQuality();
       }
     }
   }
@@ -63,13 +71,13 @@ class Shop {
         ) {
           this.updateAgedBrieAndBackStageProductQuality(i);
         } else {
-          this.decreaseQualityOfItemAtIndex(i);
+          this.items[i].decreaseQuality();
         }
 
-        this.decreaseSellInOfItemAtIndex(i);
+        this.items[i].decreaseSellIn();
 
         if (this.items[i].sellIn < 0) {
-          this.updateQualityOnSellOnNegativeOfItemAtIndex(i);
+          this.items[i].updateQualityOnSellOnNegative();
         }
       }
     }
